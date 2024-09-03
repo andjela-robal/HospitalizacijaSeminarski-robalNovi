@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<SpisakDoktora>
+	<Doktor>
+		<Jmbg>1234567890123</Jmbg>
+		<Ime>Marko</Ime>
+		<Prezime>Jovanovic</Prezime>
+	</Doktor>
+	<Doktor>
+		<Jmbg>2345678901234</Jmbg>
+		<Ime>Ana</Ime>
+		<Prezime>Petrovic</Prezime>
+	</Doktor>
+	<Doktor>
+		<Jmbg>3456789012345</Jmbg>
+		<Ime>Ivana</Ime>
+		<Prezime>Novakov</Prezime>
+	</Doktor>
+</SpisakDoktora>

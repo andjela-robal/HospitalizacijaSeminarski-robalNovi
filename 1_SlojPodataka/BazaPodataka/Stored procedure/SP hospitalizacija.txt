@@ -1,0 +1,42 @@
+USE [BolnicaHospitalizacija]
+GO
+
+CREATE VIEW [DajSveHospitalizacije]
+AS
+SELECT * FROM Hospitalizacija
+GO
+
+CREATE PROCEDURE [DajHospitalizacijuPoJmbgPacijenta]
+@JmbgPacijenta nvarchar(40)
+AS
+select Hospitalizacija.ID, Hospitalizacija.JmbgPacijenta, DatumPrijema, DatumOtpusta, Uput.ImePacijenta +' ' + Uput.PrezimePacijenta AS [Ime Pacijenta], Uput.Dijagnoza from 
+Hospitalizacija inner join  Uput on Hospitalizacija.IDUputa = Uput.ID 
+where Hospitalizacija.JmbgPacijenta = @JmbgPacijenta
+GO
+
+CREATE PROCEDURE [DajHospitalizacijuPoID]
+@IDHospitalizacije nvarchar(10)
+AS
+select Hospitalizacija.ID, Hospitalizacija.JmbgPacijenta, DatumPrijema, DatumOtpusta, Uput.ImePacijenta +' ' + Uput.PrezimePacijenta AS [Ime Pacijenta], Uput.Dijagnoza from 
+Hospitalizacija inner join  Uput on Hospitalizacija.IDUputa = Uput.ID 
+where Hospitalizacija.ID = @IDHospitalizacije
+GO
+
+CREATE PROCEDURE [DodajNovuHospitalizaciju](
+@ID nvarchar(10), 
+@JmbgPacijenta nvarchar(40),
+@DatumPrijema date,
+@DatumOtpusta date,
+@IDUputa nvarchar(10)
+)
+AS
+BEGIN
+Insert into Hospitalizacija(ID, JmbgPacijenta, DatumPrijema, DatumOtpusta, IDUputa) values (@ID, @JmbgPacijenta, @DatumPrijema, @DatumOtpusta, @IDUputa)
+END
+GO
+
+CREATE VIEW [DajSveHospitalizacijeSaJoinIDUputa]
+AS
+select Hospitalizacija.ID, Hospitalizacija.JmbgPacijenta, DatumPrijema, DatumOtpusta, Uput.ImePacijenta +' ' + Uput.PrezimePacijenta AS [Ime Pacijenta], Uput.Dijagnoza from 
+Hospitalizacija inner join  Uput on Hospitalizacija.IDUputa = Uput.ID 
+GO

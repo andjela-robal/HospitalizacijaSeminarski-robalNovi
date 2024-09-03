@@ -1,0 +1,112 @@
+USE [BolnicaHospitalizacija]
+GO
+
+CREATE PROCEDURE [DajSveUpute]
+AS
+Select * from Uput
+GO
+
+CREATE VIEW [DajSveUputeSaJoin]
+AS
+SELECT 
+Uput.ID, Uput.JmbgPacijenta, Uput.ImePacijenta, Uput.PrezimePacijenta, PolPacijenta, DatumUputa, Dijagnoza, Doktor.Ime + ' ' + Doktor.Prezime AS [Ime Doktora] 
+FROM Uput 
+INNER JOIN Doktor ON Uput.JmbgDoktora = Doktor.Jmbg;
+GO
+
+
+CREATE PROCEDURE [DajUputPoPrezimenuPacijenta] @PacijentPrezime nvarchar(40)
+AS
+select Uput.ID, Uput.JmbgPacijenta, Uput.ImePacijenta, Uput.PrezimePacijenta, PolPacijenta, DatumUputa, Dijagnoza, Doktor.Ime +' ' + Doktor.Prezime AS [Ime Doktora] from Uput inner join Doktor on Uput.JmbgDoktora = Doktor.Jmbg where Uput.PrezimePacijenta = @PacijentPrezime
+GO
+
+CREATE PROCEDURE [DajUputPoID]
+    @ID nvarchar(10)
+AS
+select Uput.ID, Uput.JmbgPacijenta, Uput.ImePacijenta, Uput.PrezimePacijenta, PolPacijenta, DatumUputa, Dijagnoza, Doktor.Ime +' ' + Doktor.Prezime AS [Ime Doktora] from Uput inner join Doktor on Uput.JmbgDoktora = Doktor.Jmbg where Uput.ID = @ID
+GO
+
+CREATE PROCEDURE [DajBrojUputaZaDoktora]
+@JmbgDoktora nvarchar(40)
+AS
+select count(*) FROM Uput WHERE JmbgDoktora=@JmbgDoktora
+GO
+
+CREATE PROCEDURE [DodajNoviUput]( 
+@ID nvarchar(10),
+@JmbgPacijenta nvarchar(40),
+@Ime nvarchar(40),
+@Prezime nvarchar(40),
+@Pol nvarchar(40),
+@DatumUputa date,
+@Dijagnoza nvarchar(100),
+@JmbgDoktora nvarchar(40)
+)
+AS
+BEGIN
+Insert into Uput(ID, JmbgPacijenta, ImePacijenta, PrezimePacijenta, PolPacijenta, DatumUputa, Dijagnoza, JmbgDoktora) values (@ID, @JmbgPacijenta, @Ime, @Prezime, @Pol, @DatumUputa, @Dijagnoza, @JmbgDoktora)
+END
+GO
+
+CREATE PROCEDURE [ObrisiUput](
+@ID nvarchar(10))
+AS
+BEGIN
+Delete from Uput where ID=@ID
+END
+GO
+
+CREATE PROCEDURE [IzmeniUput](
+@StariID nvarchar(10),
+@ID nvarchar(10),
+@JmbgPacijenta nvarchar(40),
+@Ime nvarchar(40),
+@Prezime nvarchar(40),
+@Pol nvarchar(40),
+@DatumUputa date,
+@Dijagnoza nvarchar(100),
+@JmbgDoktora nvarchar(40))
+AS
+BEGIN
+BEGIN TRANSACTION
+UPDATE Uput
+SET ID=@ID, JmbgPacijenta=@JmbgPacijenta, ImePacijenta=@Ime, PrezimePacijenta=@Prezime, PolPacijenta=@Pol, DatumUputa=@DatumUputa, JmbgDoktora=@JmbgDoktora 
+WHERE ID=@StariID
+
+    IF @@ERROR <> 0
+    BEGIN
+        ROLLBACK TRANSACTION;
+        PRINT 'Error pri izmeni uputa.';
+    END
+    ELSE
+    BEGIN
+        COMMIT TRANSACTION;
+        PRINT 'Izmenjen uput.';
+    END
+END
+GO
+
+
+CREATE VIEW [DajSveUputeSaJoinJmbgomDoktora] 
+AS
+Select Uput.ID, Uput.JmbgPacijenta, Uput.ImePacijenta, Uput.PrezimePacijenta, PolPacijenta, DatumUputa, Dijagnoza, Doktor.Ime +' ' + Doktor.Prezime AS [Ime Doktora], Doktor.Jmbg from Uput inner join Doktor on Uput.JmbgDoktora = Doktor.Jmbg
+GO
+
+CREATE PROCEDURE [DajBrojUputaDoktoraPoDatumu]
+(@JmbgDoktora nvarchar(40),
+@DatumUputa date)
+AS
+BEGIN
+SELECT COUNT(*) FROM Uput 
+WHERE JmbgDoktora = @JmbgDoktora AND DatumUputa = @DatumUputa
+END
+GO
+
+CREATE PROCEDURE [DajJmbgPacijentaPoID]
+@ID nvarchar(10)
+AS
+BEGIN
+SELECT JmbgPacijenta FROM Uput
+WHERE ID=@ID
+END
+GO

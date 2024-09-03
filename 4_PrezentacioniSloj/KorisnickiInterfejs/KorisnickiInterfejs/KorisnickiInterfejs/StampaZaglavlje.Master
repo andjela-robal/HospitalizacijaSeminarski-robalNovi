@@ -1,0 +1,100 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="StampaZaglavlje.master.cs" Inherits="KorisnickiInterfejs.StampaZaglavlje" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+     <title>Informacije Bolnice</title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+ 
+        .style2
+        {
+
+            color: #0D47A1;
+            font-size: small;
+        }
+        .style3
+        {
+            color: #0D47A1;
+            font-size: small;
+            width: 6px;
+        }
+        .style4
+        {
+            color: #0D47A1;
+            font-size: small;
+            width: 35px;
+        }
+        .style5
+        {
+            color: #0D47A1;
+            font-size: small;
+            width: 4px;
+        }
+    </style>
+</head>
+<body style ="background-color:#DCF4FF" >
+    <form id="Form1" runat="server">
+            <div class="title">
+                <h1>
+                    Bolnica Mir i Zdravlje - <%= Page.Title %>
+                </h1>
+            </div>
+         <div class="loginDisplay">
+    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx">ODJAVA</asp:HyperLink>
+            </div>
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem Text="DOKTORI" 
+                            Value="DOKTORI">
+                            <asp:MenuItem NavigateUrl="~/DoktorTabelarni.aspx" 
+                                Text="Tabelarni prikaz doktora" Value="Tabelarni prikaz doktora">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/DoktorUnos.aspx" Text="Unos doktora" 
+                                Value="Unos doktora"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/DoktorTabelaEdit.aspx" 
+                                Text="Izmena i brisanje doktora" Value="Izmena i brisanje doktora">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/DoktorStampa.aspx" Text="Stampa spiska doktora" 
+                                Value="Stampa spiska doktora"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/DoktorParametarStampe.aspx" 
+                                Text="Parametarska stampa spiska doktora" 
+                                Value="Parametarska stampa spiska doktora"></asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="UPUTI" 
+                            Value="UPUTI">
+                            <asp:MenuItem NavigateUrl="~/UputSpisak.aspx" Text="Spisak uputa" 
+                                Value="Spisak nastavnika"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UputUnos.aspx" Text="Unos uputa" 
+                                Value="Unos uputa"></asp:MenuItem>
+                        </asp:MenuItem>
+                    </Items>
+                </asp:Menu>
+            </div>
+                <center>
+                <table style="background-color:#DCF4FF ">
+                    <tr>
+                        <td class="style4">
+                            &nbsp;</td>
+                        <td class="style2">
+                            BOLNICA <strong>&quot;MIR I ZDRAVLJE&quot;</strong><br />
+                            ZRENJANIN<br />
+                            SERBIA</td>
+                        <td class="style4">
+                            &nbsp;</td>
+                    </tr>
+                </table>
+                </center>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+        </div>
+    <div class="footer">
+        
+        Bolnica Mir i Zdravlje 2024.</div>
+    </form>
+</body>
+</html>

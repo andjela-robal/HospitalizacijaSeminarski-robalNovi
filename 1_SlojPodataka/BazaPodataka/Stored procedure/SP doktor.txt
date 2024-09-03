@@ -1,0 +1,76 @@
+USE [BolnicaHospitalizacija]
+GO
+
+CREATE VIEW [DajSveDoktore]
+AS
+SELECT * FROM Doktor
+GO
+
+CREATE PROCEDURE [DajDoktoraPoJmbg]
+@JmbgDoktora nvarchar(40)
+AS
+select Ime + ' ' + Prezime AS [Ime Doktora] from Doktor where Jmbg=@JmbgDoktora
+GO
+
+CREATE PROCEDURE [DajJmbgDoktoraPoImenuIPrezimenu]
+(@Ime nvarchar(40),
+@Prezime nvarchar(40)
+)
+AS
+select Jmbg, Ime, Prezime from Doktor where Ime=@Ime AND Prezime=@Prezime
+GO
+
+CREATE PROCEDURE [DajDoktoraPoPrezimenu]
+(@Prezime nvarchar(40)
+)
+AS
+select * from Doktor where Doktor.Prezime=@Prezime
+GO
+
+CREATE PROCEDURE [DodajNovogDoktora]
+( 
+@JmbgDoktor nvarchar(40),
+@Ime nvarchar(40),
+@Prezime nvarchar(40)
+)
+AS
+BEGIN
+Insert into Doktor(Jmbg, Ime, Prezime) values (@JmbgDoktor, @Ime, @Prezime)
+END
+GO
+
+CREATE PROCEDURE [ObrisiDoktora](
+@JmbgDoktor nvarchar(40))
+AS
+BEGIN
+Delete from Doktor where Jmbg=@JmbgDoktor
+END
+GO
+
+CREATE PROCEDURE [IzmeniDoktora](
+@StariJmbg nvarchar(40),
+@JmbgDoktor nvarchar(40),
+@Ime nvarchar(40),
+@Prezime nvarchar(40)
+)
+AS
+BEGIN
+BEGIN TRANSACTION
+UPDATE Doktor 
+SET Jmbg=@JmbgDoktor, Ime=@Ime, Prezime=@Prezime 
+WHERE Jmbg=@StariJmbg
+
+    IF @@ERROR <> 0
+    BEGIN
+        ROLLBACK TRANSACTION;
+        PRINT 'Error pri izmeni doktora.';
+    END
+    ELSE
+    BEGIN
+        COMMIT TRANSACTION;
+        PRINT 'Izmenjen doktor.';
+    END
+END
+GO
+
+

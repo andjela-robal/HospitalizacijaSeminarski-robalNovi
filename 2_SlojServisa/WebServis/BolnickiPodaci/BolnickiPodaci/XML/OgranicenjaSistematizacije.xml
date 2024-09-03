@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<SpisakOgranicenja>
+	<OgranicenjeDoktora>
+		<IDDoktora>mj</IDDoktora>
+		<MaxBrUputaNaDan>13</MaxBrUputaNaDan>
+	</OgranicenjeDoktora>
+	<OgranicenjeDoktora>
+		<IDDoktora>ap</IDDoktora>
+		<MaxBrUputaNaDan>12</MaxBrUputaNaDan>
+	</OgranicenjeDoktora>
+	<OgranicenjeDoktora>
+		<IDDoktora>in</IDDoktora>
+		<MaxBrUputaNaDan>15</MaxBrUputaNaDan>
+	</OgranicenjeDoktora>
+</SpisakOgranicenja>

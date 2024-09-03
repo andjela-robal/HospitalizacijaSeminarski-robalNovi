@@ -1,0 +1,105 @@
+USE [master]
+GO
+
+CREATE DATABASE [BolnicaHospitalizacija] 
+GO
+
+USE [BolnicaHospitalizacija]
+GO
+
+CREATE TABLE [dbo].[Uput](
+     [ID] [nvarchar] (10) NOT NULL,
+	[JmbgPacijenta] [nvarchar](40) NOT NULL,
+	[ImePacijenta] [nvarchar](40) NOT NULL,
+	[PrezimePacijenta] [nvarchar](40) NOT NULL,
+	[PolPacijenta] [nvarchar](40) NOT NULL,
+	[DatumUputa] [date] NOT NULL,
+     [Dijagnoza] [nvarchar] (100) NOT NULL,
+	[JmbgDoktora] [nvarchar](40) NOT NULL
+)
+GO
+
+ALTER TABLE [dbo].[Uput]
+ADD CONSTRAINT [PK_UPUT] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)
+
+GO
+
+CREATE TABLE [dbo].[Doktor](
+	[Jmbg] [nvarchar](40) NOT NULL,
+	[Ime] [nvarchar](40) NOT NULL,
+	[Prezime] [nvarchar](40) NOT NULL
+)
+GO
+
+ALTER TABLE [dbo].[Doktor]
+ADD CONSTRAINT [PK_DOKTOR] PRIMARY KEY CLUSTERED
+(
+	[Jmbg] ASC
+)
+GO
+
+ALTER TABLE [dbo].[Uput] ADD CONSTRAINT
+[FK_Uput_Doktor] FOREIGN KEY([JmbgDoktora])
+REFERENCES [dbo].[Doktor] ([Jmbg])
+ON UPDATE CASCADE
+GO
+
+CREATE TABLE [dbo].[Hospitalizacija](
+     [ID] [nvarchar] (10) NOT NULL,
+	[JmbgPacijenta] [nvarchar](40) NOT NULL,
+	[DatumPrijema] [date] NOT NULL,
+	[DatumOtpusta] [date] NOT NULL,
+     [IDUputa] [nvarchar] (10) NOT NULL
+)
+GO
+
+ALTER TABLE [dbo].[Hospitalizacija]
+ADD CONSTRAINT [PK_HOSPITALIZACIJA] PRIMARY KEY CLUSTERED
+(
+	[ID] ASC
+)
+GO
+
+ALTER TABLE [dbo].[Hospitalizacija] ADD CONSTRAINT
+[FK_Hospitalizacija_Uput] FOREIGN KEY([IDUputa])
+REFERENCES [dbo].[Uput] ([ID])
+ON UPDATE CASCADE
+GO
+
+CREATE TABLE [dbo].[Korisnik](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Prezime] [nvarchar](40) NOT NULL,
+	[Ime] [nvarchar](30) NOT NULL,
+	[KorisnickoIme] [nvarchar](20) NOT NULL,
+	[Sifra] [nvarchar](30) NOT NULL,
+	[Status] [nvarchar](10) NOT NULL
+)
+
+GO 
+
+INSERT INTO [dbo].[Korisnik] ([Prezime], [Ime], [KorisnickoIme], [Sifra], [Status])
+VALUES 
+('Nikolic', 'Ivan', 'inik', 'sifra123', 'Aktivan'),
+('Milenkovic', 'Jelena', 'jmilen', '12344321', 'Aktivan'),
+('Savic', 'Stefan', 'ssavic', 'admin123', 'Neaktivan');
+
+INSERT INTO Doktor (Jmbg, Ime, Prezime)
+VALUES 
+('1234567890123', 'Marko', 'Jovanovic'),
+('2345678901234', 'Ana', 'Petrovic'),
+('3456789012345', 'Ivana', 'Novakov');
+
+INSERT INTO [dbo].[Uput] (ID, JmbgPacijenta, ImePacijenta, PrezimePacijenta, PolPacijenta, DatumUputa, JmbgDoktora, Dijagnoza)
+VALUES 
+('101', '1122334455667', 'Milan', 'Kovacevic', 'Muski', '2024-08-06', '1234567890123', 'Hipertenzija - visok krvni pritisak'),
+('102', '2233445566778', 'Jelena', 'Markovic', 'Zenski', '2024-08-07', '2345678901234', 'Atopijski dermatitis - ekcem'),
+('103', '3344556677889', 'Stefan', 'Nikolic', 'Muski', '2024-08-08', '1234567890123', 'Cir na zelucu'); 
+
+INSERT INTO [dbo].[Hospitalizacija] (ID, JmbgPacijenta, DatumPrijema, DatumOtpusta, IDUputa)
+VALUES 
+('HT10', '1122334455667', '2024-08-06', '2024-08-16', '101'),
+('AD5', '2233445566778', '2024-08-07', '2024-08-20', '102'),
+('CZ15', '3344556677889', '2024-08-08', '2024-08-25', '103'); 
